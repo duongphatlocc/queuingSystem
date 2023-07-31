@@ -1,0 +1,78 @@
+body {
+  overflow: hidden;
+}
+.bg-left-login {
+  border-bottom-left-radius: 16px;
+  border-top-left-radius: 16px;
+  background: var(--bg, #f6f6f6);
+  height: 750px;
+  width: 40%;
+}
+.image-logo {
+  position: relative;
+  z-index: 1;
+  left: 110%;
+  top: 80px;
+}
+.bg-right-login {
+  position: relative;
+  left: 40%;
+  top: -750px;
+  border-bottom-right-radius: 16px;
+  border-top-right-radius: 16px;
+  background: var(--white, #fff);
+  width: 60%;
+  height: 750px;
+}
+.form-input-login {
+  position: absolute;
+
+  width: auto;
+  height: auto;
+  top: 35%;
+  left: 5%;
+}
+.input-login {
+  width: 400px;
+  height: 35px;
+  border-radius: 8px;
+}
+.font-login {
+  color: #37474f;
+  /* 18/18 Reg */
+  font-family: Nunito;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 27px; /* 150% */
+}
+.font-text-forgot-password {
+  color: var(--red, #e73f3f);
+
+  /* 14/14 Reg */
+  font-family: Nunito;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 21px; /* 150% */
+}
+.button-login {
+  height: 50px;
+  width: 150px;
+  border-radius: 8px;
+  margin-left: 30%;
+  background: var(--orange-orange-400, #ff9138);
+  color: white;
+  font-family: Nunito;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 27px; /* 150% */
+
+  /* down */
+  box-shadow: 0px 0px 6px 0px #e7e9f2;
+}
+.login-people {
+  margin-top: 10%;
+  margin-left: 20%;
+}
