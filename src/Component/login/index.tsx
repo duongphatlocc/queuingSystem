@@ -2,6 +2,7 @@ import { Button, Image, Input, Typography } from "antd";
 import logo from "../../image/logo.svg";
 import { Link } from "react-router-dom";
 import people from "../../image/people.svg";
+
 function Bglogin() {
   return (
     <div>
@@ -13,12 +14,13 @@ function Bglogin() {
               Tên đăng nhập *
             </Typography.Text>
             <br />
-            <Input className="input-login"></Input>
+            <Input className="input-login" />
             <br />
             <div className="mt-3"></div>
             <Typography.Text className="font-login">Mật khẩu *</Typography.Text>
             <br />
-            <Input className="input-login"></Input>
+            <Input.Password className="input-login" />
+
             <br />
             <Link className="font-text-forgot-password" to="/forgotPassword">
               Quên mật khẩu?
@@ -29,9 +31,12 @@ function Bglogin() {
         </div>
         <div className=" bg-right-login">
           <Image src={people} preview={false} className="login-people"></Image>
-          <div>
-            <Typography.Text>Hệ thống</Typography.Text>
-            <Typography.Text>QUẢN LÝ XẾP HÀNG</Typography.Text>
+          <div className="login-text-right">
+            <Typography.Text className="login-text-1">Hệ thống</Typography.Text>
+            <br />
+            <Typography.Text className="login-text-2">
+              QUẢN LÝ XẾP HÀNG
+            </Typography.Text>
           </div>
         </div>
       </div>

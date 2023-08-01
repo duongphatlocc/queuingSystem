@@ -12,7 +12,7 @@ body {
   position: relative;
   z-index: 1;
   left: 110%;
-  top: 80px;
+  top: 70px;
 }
 .bg-right-login {
   position: relative;
@@ -57,7 +57,7 @@ body {
   line-height: 21px; /* 150% */
 }
 .button-login {
-  height: 50px;
+  height: 40px;
   width: 150px;
   border-radius: 8px;
   margin-left: 30%;
@@ -75,4 +75,145 @@ body {
 .login-people {
   margin-top: 10%;
   margin-left: 20%;
+}
+.login-text-right {
+  margin-left: 55%;
+  margin-top: -35%;
+}
+.login-text-1 {
+  color: var(--orange-orange-500, #ff7506);
+  text-align: center;
+
+  /* 34/34 Reg */
+  font-family: Nunito;
+  font-size: 34px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 51px; /* 150% */
+}
+.login-text-2 {
+  color: var(--orange-orange-500, #ff7506);
+  text-align: center;
+
+  /* 36/36 Xbold */
+  font-family: Nunito;
+  font-size: 36px;
+  font-style: normal;
+  font-weight: 900;
+  line-height: 54px; /* 150% */
+}
+.forgot-password-people {
+  margin-top: 15%;
+  margin-left: 10%;
+}
+.reset-password {
+  color: var(--gray-gray-500, #282739);
+
+  /* 22/22 Bold */
+  font-family: Nunito;
+  font-size: 22px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 33px; /* 150% */
+  margin-left: 24%;
+}
+.menu-bg-left {
+  border-radius: 16px 0px 0px 16px;
+  background: var(--white, #fff);
+  box-shadow: 0px 4px 6px 0px rgba(219, 219, 219, 0.5);
+  width: 15%;
+  height: 100vh;
+}
+.logout {
+  border-radius: 8px;
+  background: var(--orange-orange-50, #fff2e7);
+  border: #fff2e7;
+  width: 90%;
+  height: 50px;
+  margin-top: 100%;
+  margin-left: 5%;
+}
+.text {
+  color: var(--gray-gray-300, #7e7d88);
+
+  /* 16/16 Semi */
+  font-family: Nunito;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 24px; /* 150% */
+}
+:where(.css-dev-only-do-not-override-txh9fw).ant-menu-light .ant-menu-item a,
+:where(.css-dev-only-do-not-override-txh9fw).ant-menu-light
+  > .ant-menu
+  .ant-menu-item
+  a,
+:where(.css-dev-only-do-not-override-txh9fw).ant-menu-light
+  .ant-menu-item
+  a:hover,
+:where(.css-dev-only-do-not-override-txh9fw).ant-menu-light
+  > .ant-menu
+  .ant-menu-item
+  a:hover {
+  text-decoration: none;
+}
+.text-logout {
+  color: var(--orange-orange-500, #ff7506);
+  font-family: Nunito;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+}
+.button-logout-ml {
+  margin-left: -40%;
+}
+:where(.css-dev-only-do-not-override-txh9fw).ant-menu
+  .ant-menu-submenu-expand-icon,
+:where(.css-dev-only-do-not-override-txh9fw).ant-menu .ant-menu-submenu-arrow {
+  display: none;
+}
+.info-bg-right {
+  background-color: aqua;
+  width: 90%;
+  height: 750px;
+  position: relative;
+  z-index: 1;
+  margin-top: -750px;
+  left: 15%;
+  border-top-right-radius: 16px;
+  border-bottom-right-radius: 16px;
+  background: var(--bg, #f6f6f6);
+}
+.name-info {
+  color: var(--gray-gray-400-text, #535261);
+
+  /* 16/16 Bold */
+  font-family: Nunito;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 24px; /* 150% */
+}
+.hi-info {
+}
+.bg-right-white {
+  width: 450px;
+  height: 750px;
+  border-radius: 8px 0px 0px 8px;
+  background: var(--white, #fff);
+  box-shadow: 0px 4px 6px 0px rgba(219, 219, 219, 0.5);
+  position: relative;
+  left: 70%;
+  top: -840px;
+  z-index: 1;
+}
+.text-title {
+  color: var(--gray-blue-gray-4-place-holder, #7e7d88);
+
+  /* 20/20 Bold */
+  font-family: Nunito;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 30px; /* 150% */
 }

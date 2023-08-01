@@ -1,0 +1,51 @@
+.dashboard-title {
+  color: var(--orange-orange-500, #ff7506);
+
+  /* 24/24 Bold */
+  font-family: Nunito;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 36px; /* 150% */
+  position: absolute;
+  top: 75px;
+}
+.dashboard-text {
+  color: var(--gray-gray-400-text, #535261);
+
+  /* 14/14 Bold */
+  font-family: Nunito;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 18px; /* 128.571% */
+}
+.dashboard-number {
+  color: var(--gray-gray-400-text, #535261);
+
+  /* 30/30 Bold */
+  font-family: Nunito;
+  font-size: 30px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 45px; /* 150% */
+}
+.percent {
+  width: 50px;
+  height: 20px;
+  border-radius: 7.181px;
+  background: rgba(255, 149, 1, 0.15);
+  margin-left: 25px;
+  text-align: center;
+}
+.text-right-dashboard {
+  color: var(--orange-orange-500, #ff7506);
+
+  /* 24/24 Bold */
+  font-family: Nunito;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 36px; /* 150% */
+  margin-left: 30px;
+}

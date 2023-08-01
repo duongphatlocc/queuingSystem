@@ -1,0 +1,112 @@
+.device-title {
+  color: var(--orange-orange-500, #ff7506);
+
+  /* 24/24 Bold */
+  font-family: Nunito;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 36px; /* 150% */
+}
+.device-content {
+  position: relative;
+  top: -730px;
+  left: 17%;
+  z-index: 1;
+}
+.label-input {
+  color: var(--gray-gray-500, #282739);
+
+  /* 16/16 Semi */
+  font-family: Nunito;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 24px; /* 150% */
+}
+.select {
+  border-radius: 8px;
+  border: 1.5px solid var(--gray-gray-100, #d4d4d7);
+  background: var(--white, #fff);
+}
+:where(.css-dev-only-do-not-override-txh9fw).ant-select-single:not(
+    .ant-select-customize-input
+  )
+  .ant-select-selector {
+  height: 40px;
+}
+:where(.css-dev-only-do-not-override-txh9fw).ant-select .ant-select-arrow {
+  color: #ff7506;
+}
+.device-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.device-table th,
+.device-table td {
+  border: 1px solid #ffa500; /* Orange border color */
+  padding: 8px;
+  text-align: left;
+}
+
+.device-table tr:nth-child(even) {
+  background-color: #f2f2f2; /* Light gray background for even rows */
+}
+
+:where(.css-dev-only-do-not-override-txh9fw).ant-table-wrapper
+  .ant-table-thead
+  > tr
+  > th,
+:where(.css-dev-only-do-not-override-txh9fw).ant-table-wrapper
+  .ant-table-thead
+  > tr
+  > td {
+  background-color: var(--orange-orange-400, #ff9138);
+}
+.font-word {
+  color: var(--gray-gray-500, #282739);
+
+  /* 16/16 Semi */
+  font-family: Nunito;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 24px; /* 150% */
+}
+.btn-orange {
+  position: relative;
+  z-index: 1;
+  top: -200px;
+  left: -250px;
+  width: 100px;
+  height: 120px;
+  border-radius: 8px 0px 0px 8px;
+  background: var(--orange-orange-50, #fff2e7);
+
+  /* down */
+  box-shadow: 0px 0px 6px 0px #e7e9f2;
+}
+.text-orange {
+  color: var(--orange-orange-500, #ff7506);
+  text-align: center;
+  font-family: Nunito;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  margin-top: 10px;
+}
+.btn-orange-device {
+  position: relative;
+  z-index: 1;
+  top: -335px;
+  left: 77%;
+  width: 100px;
+  height: 120px;
+  border-radius: 8px 0px 0px 8px;
+  background: var(--orange-orange-50, #fff2e7);
+
+  /* down */
+  box-shadow: 0px 0px 6px 0px #e7e9f2;
+}

@@ -4,17 +4,15 @@ import "./App.css";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 
-import Bglogin from "./Component/login/index";
 
+import AppRoutes from "./Component/router";
 
 const App: React.FC = () => {
   return (
     <div className="App">
-      
       <div>
-        <Bglogin></Bglogin>
+        <AppRoutes />
       </div>
-     
     </div>
   );
 };
