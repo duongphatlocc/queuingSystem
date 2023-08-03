@@ -1,0 +1,13 @@
+.btn-orange-user {
+  position: relative;
+  z-index: 1;
+  top: -230px;
+  left: 77%;
+  width: 100px;
+  height: 120px;
+  border-radius: 8px 0px 0px 8px;
+  background: var(--orange-orange-50, #fff2e7);
+
+  /* down */
+  box-shadow: 0px 0px 6px 0px #e7e9f2;
+}

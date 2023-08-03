@@ -5,8 +5,26 @@ import notification from "../../image/notification.svg";
 import avatar from "../../image/avatar.svg";
 import "../../css/device.css";
 import iconPen from "../../image/iconPen.svg";
+import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { DeviceData, fetchDevice } from "../../Redux/deviceSlice";
+import { AnyAction } from "@reduxjs/toolkit";
+import { useDispatch, useSelector } from "react-redux";
+import { ThunkDispatch } from "redux-thunk";
+import { RootState } from "../../Redux/store";
 
 function DetailsDevice() {
+  const { id } = useParams<{ id: string }>();
+  const [dataSelect, setDataSelect] = useState<DeviceData | null>(null);
+  const dispatch: ThunkDispatch<RootState, unknown, AnyAction> = useDispatch();
+  const deviceData = useSelector((state: RootState) => state.device.device);
+  useEffect(() => {
+    dispatch(fetchDevice());
+    const selectedData = deviceData.find((item) => item.id === id);
+    setDataSelect(selectedData || null); // Nếu không tìm thấy, setEmailData thành null
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch]);
+
   return (
     <div>
       <SideMenu />
@@ -86,39 +104,51 @@ function DetailsDevice() {
               <Typography.Text className="font-word">
                 Mã thiết bị:
               </Typography.Text>
-              <Typography.Text className="ms-4">KIO_01</Typography.Text>
+              <Typography.Text className="ms-4">
+                {dataSelect?.device}
+              </Typography.Text>
               <div style={{ marginLeft: "400px" }}>
                 {" "}
                 <Typography.Text className="font-word">
                   Loại thiết bị:
                 </Typography.Text>
-                <Typography.Text className="ms-4">Kiosk</Typography.Text>
+                <Typography.Text className="ms-4">
+                  {dataSelect?.typeOfDevice}
+                </Typography.Text>
               </div>
             </Space>
             <Space className="mt-3">
               <Typography.Text className="font-word">
                 Tên thiết bị:
               </Typography.Text>
-              <Typography.Text className="ms-4">Kiosk</Typography.Text>
+              <Typography.Text className="ms-4">
+                {dataSelect?.name}
+              </Typography.Text>
               <div style={{ marginLeft: "405px" }}>
                 {" "}
                 <Typography.Text className="font-word">
                   Tên đăng nhập:
                 </Typography.Text>
-                <Typography.Text className="ms-4">Linhkyo011</Typography.Text>
+                <Typography.Text className="ms-4">
+                  {dataSelect?.userName}
+                </Typography.Text>
               </div>
             </Space>
             <Space className="mt-3">
               <Typography.Text className="font-word">
                 Địa chỉ IP:
               </Typography.Text>
-              <Typography.Text className="ms-4">128.172.308</Typography.Text>
+              <Typography.Text className="ms-4">
+                {dataSelect?.address}
+              </Typography.Text>
               <div style={{ marginLeft: "378px" }}>
                 {" "}
                 <Typography.Text className="font-word">
                   Mật khẩu:{" "}
                 </Typography.Text>
-                <Typography.Text className="ms-4">CMS</Typography.Text>
+                <Typography.Text className="ms-4">
+                  {dataSelect?.password}
+                </Typography.Text>
               </div>
             </Space>
             <br />
@@ -128,10 +158,7 @@ function DetailsDevice() {
               </Typography.Text>
               <br />
               <div className="mt-2"></div>
-              <Typography.Text>
-                Khám tim mạch, Khám sản - Phụ khoa, Khám răng hàm mặt, Khám tai
-                mũi họng, Khám hô hấp, Khám tổng quát.
-              </Typography.Text>
+              <Typography.Text>{dataSelect?.serviceUse}</Typography.Text>
             </div>
           </Card>
           <Button className="btn-orange">

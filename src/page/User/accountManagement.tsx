@@ -4,11 +4,9 @@ import notification from "../../image/notification.svg";
 import avatar from "../../image/avatar.svg";
 import iconBigger from "../../image/iconBigger.svg";
 import "../../css/device.css";
-import { useDispatch, useSelector } from "react-redux";
+import "../../css/user.css";
 
-import { fetchDevice } from "../../Redux/deviceSlice";
-import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import dotRed from "../../image/dotRed.svg";
 import dotGreen from "../../image/dotGreen.svg";
@@ -16,57 +14,55 @@ import add from "../../image/add.svg";
 import { ThunkDispatch } from "redux-thunk";
 import { RootState } from "../../Redux/store";
 import { AnyAction } from "@reduxjs/toolkit";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { fetchUser } from "../../Redux/userSlice";
 
-function LoadDataDevice() {
+function AccountManagement() {
   const handleChange = (value: { value: string; label: React.ReactNode }) => {
     console.log(value);
   };
-  const navigate = useNavigate();
-  // const dispatch: any = useDispatch();
+
   const getRowClassName = (_record: any, index: number) => {
     return index % 2 !== 0 ? "bg-pink" : "";
   };
-
-  // const deviceData = useSelector((state: any) => state.device.device);
-  // useEffect(() => {
-  //   dispatch(fetchDevice());
-  // });
-  const dispatch: ThunkDispatch<RootState, unknown, AnyAction> = useDispatch();
-  const deviceData = useSelector((state: RootState) => state.device.device);
-  useEffect(() => {
-    dispatch(fetchDevice());
-  }, [dispatch]);
   const [activeStatusFilter, setActiveStatusFilter] = useState("Tất cả");
-  const [connectionStatusFilter, setConnectionStatusFilter] =
-    useState("Tất cả");
-  const filteredDeviceData = deviceData.filter(
-    (item: { activeStatus: string; connectionStatus: string }) => {
-      const matchActiveStatus =
-        activeStatusFilter === "Tất cả" ||
-        item.activeStatus === activeStatusFilter;
-      const matchConnectionStatus =
-        connectionStatusFilter === "Tất cả" ||
-        item.connectionStatus === connectionStatusFilter;
-
-      return matchActiveStatus && matchConnectionStatus;
-    }
-  );
-
+  const dispatch: ThunkDispatch<RootState, unknown, AnyAction> = useDispatch();
+  const userData = useSelector((state: RootState) => state.users.users);
+  useEffect(() => {
+    dispatch(fetchUser());
+  }, [dispatch]);
+  const filteredUserData = userData.filter((item: { role: string }) => {
+    const matchActiveStatus =
+      activeStatusFilter === "Tất cả" ||
+      item.role === activeStatusFilter;
+    return matchActiveStatus;
+  });
   const columns = [
     {
-      title: "Mã thiết bị",
-      dataIndex: "device",
-      key: "device",
+      title: "Tên đăng nhập",
+      dataIndex: "userName",
+      key: "userName",
     },
     {
-      title: "Tên thiết bị",
-      dataIndex: "name",
-      key: "name",
+      title: "Họ tên",
+      dataIndex: "fullName",
+      key: "fullName",
     },
     {
-      title: "Địa chỉ IP",
-      dataIndex: "address",
-      key: "address",
+      title: "Số điện thoại",
+      dataIndex: "phone",
+      key: "phone",
+    },
+    {
+      title: "Email",
+      dataIndex: "email",
+      key: "email",
+    },
+    {
+      title: "Vai trò",
+      dataIndex: "role",
+      key: "role",
     },
     {
       title: "Trạng thái hoạt động",
@@ -83,39 +79,12 @@ function LoadDataDevice() {
         </Space>
       ),
     },
-    {
-      title: "Trạng thái kết nối",
-      dataIndex: "connectionStatus",
-      key: "connectionStatus",
-      render: (connectionStatus: string) => (
-        <Space>
-          {connectionStatus === "Kết nối" ? (
-            <Image src={dotGreen} />
-          ) : (
-            <Image src={dotRed} />
-          )}
-          <span>{connectionStatus}</span>
-        </Space>
-      ),
-    },
-    {
-      title: "Dịch vụ sử dụng",
-      dataIndex: "serviceUse",
-      key: "serviceUse",
-    },
-    {
-      title: "",
-      dataIndex: "detail",
-      key: "detail",
-      render: (_text: any, record: any) => (
-        <Link to={`/details/${record.id}`}>Chi tiết</Link>
-      ),
-    },
+
     {
       title: "",
       dataIndex: "update",
       key: "update",
-      render: () => <Link to={`/update`}>Cập nhật</Link>,
+      render: () => <Link to={""}>Cập nhật</Link>,
     },
   ];
 
@@ -134,7 +103,7 @@ function LoadDataDevice() {
         }}
       >
         <Typography.Text className="text-title">
-          Thiết bị{" "}
+          Cài đặt hệ thống{" "}
           <Image
             src={iconBigger}
             preview={false}
@@ -143,14 +112,14 @@ function LoadDataDevice() {
         </Typography.Text>
 
         <Typography.Text className="info-information">
-          Danh sách thiết bị
+          Quản lý tài khoản
         </Typography.Text>
         <Image
           src={notification}
           preview={false}
-          style={{ marginLeft: "2200%" }}
+          style={{ marginLeft: "2000%" }}
         ></Image>
-        <div style={{ display: "inline", marginLeft: "60%" }}>
+        <div style={{ display: "inline", marginLeft: "55%" }}>
           <Image src={avatar} preview={false}></Image>
         </div>
         <Typography.Text
@@ -177,14 +146,14 @@ function LoadDataDevice() {
       </div>
       <div className="device-content">
         <Typography.Text className="device-title ">
-          Danh sách thiết bị
+          Danh sách tài khoản
         </Typography.Text>
         <br />
         <Space className="mt-3">
           <div>
             {" "}
             <Typography.Text className="label-input">
-              Trạng thái hoạt động
+              Tên vai trò
             </Typography.Text>
             <br />
             <Select
@@ -201,47 +170,22 @@ function LoadDataDevice() {
                   label: "Tất cả",
                 },
                 {
-                  value: "Hoạt động",
-                  label: "Hoạt động",
+                  value: "Kế toán",
+                  label: "Kế toán",
                 },
                 {
-                  value: "Ngưng hoạt động",
-                  label: "Ngưng hoạt động",
+                  value: "Quản lý",
+                  label: "Quản lý",
+                },
+                {
+                  value: "Admin",
+                  label: "Admin",
                 },
               ]}
             />
           </div>
-          <div className="ms-4">
-            {" "}
-            <Typography.Text className="label-input">
-              Trạng thái kết nối
-            </Typography.Text>
-            <br />
-            <Select
-              className="select"
-              labelInValue
-              defaultValue={{ value: "Tất cả", label: "Tất cả" }}
-              style={{ width: 300 }}
-              onChange={(value) => {
-                setConnectionStatusFilter(value.value);
-              }}
-              options={[
-                {
-                  value: "Tất cả",
-                  label: "Tất cả",
-                },
-                {
-                  value: "Kết nối",
-                  label: "Kết nối",
-                },
-                {
-                  value: "Mất kết nối",
-                  label: "Mất kết nối",
-                },
-              ]}
-            />
-          </div>
-          <div style={{ marginLeft: "200px" }}>
+
+          <div style={{ marginLeft: "520px" }}>
             {" "}
             <Typography.Text className="label-input">Từ khoá</Typography.Text>
             <br />
@@ -275,11 +219,11 @@ function LoadDataDevice() {
           columns={columns}
           bordered
           style={{ width: "74%" }}
-          dataSource={filteredDeviceData}
           rowClassName={getRowClassName}
           pagination={{ pageSize: 4 }}
+          dataSource={filteredUserData}
         />
-        <Button className="btn-orange-device" onClick={() => navigate(`/add`)}>
+        <Button className="btn-orange-user">
           <Image src={add} preview={false}></Image>
           <br />
           <Typography.Text className="text-orange">
@@ -291,4 +235,4 @@ function LoadDataDevice() {
     </div>
   );
 }
-export default LoadDataDevice;
+export default AccountManagement;

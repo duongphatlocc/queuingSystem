@@ -4,53 +4,21 @@ import notification from "../../image/notification.svg";
 import avatar from "../../image/avatar.svg";
 import iconBigger from "../../image/iconBigger.svg";
 import "../../css/device.css";
-import { useDispatch, useSelector } from "react-redux";
 
-import { fetchDevice } from "../../Redux/deviceSlice";
-import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import dotRed from "../../image/dotRed.svg";
 import dotGreen from "../../image/dotGreen.svg";
 import add from "../../image/add.svg";
-import { ThunkDispatch } from "redux-thunk";
-import { RootState } from "../../Redux/store";
-import { AnyAction } from "@reduxjs/toolkit";
 
-function LoadDataDevice() {
+function LoadDataService() {
   const handleChange = (value: { value: string; label: React.ReactNode }) => {
     console.log(value);
   };
   const navigate = useNavigate();
-  // const dispatch: any = useDispatch();
   const getRowClassName = (_record: any, index: number) => {
     return index % 2 !== 0 ? "bg-pink" : "";
   };
-
-  // const deviceData = useSelector((state: any) => state.device.device);
-  // useEffect(() => {
-  //   dispatch(fetchDevice());
-  // });
-  const dispatch: ThunkDispatch<RootState, unknown, AnyAction> = useDispatch();
-  const deviceData = useSelector((state: RootState) => state.device.device);
-  useEffect(() => {
-    dispatch(fetchDevice());
-  }, [dispatch]);
-  const [activeStatusFilter, setActiveStatusFilter] = useState("Tất cả");
-  const [connectionStatusFilter, setConnectionStatusFilter] =
-    useState("Tất cả");
-  const filteredDeviceData = deviceData.filter(
-    (item: { activeStatus: string; connectionStatus: string }) => {
-      const matchActiveStatus =
-        activeStatusFilter === "Tất cả" ||
-        item.activeStatus === activeStatusFilter;
-      const matchConnectionStatus =
-        connectionStatusFilter === "Tất cả" ||
-        item.connectionStatus === connectionStatusFilter;
-
-      return matchActiveStatus && matchConnectionStatus;
-    }
-  );
 
   const columns = [
     {
@@ -192,9 +160,6 @@ function LoadDataDevice() {
               labelInValue
               defaultValue={{ value: "Tất cả", label: "Tất cả" }}
               style={{ width: 300 }}
-              onChange={(value) => {
-                setActiveStatusFilter(value.value);
-              }}
               options={[
                 {
                   value: "Tất cả",
@@ -222,9 +187,6 @@ function LoadDataDevice() {
               labelInValue
               defaultValue={{ value: "Tất cả", label: "Tất cả" }}
               style={{ width: 300 }}
-              onChange={(value) => {
-                setConnectionStatusFilter(value.value);
-              }}
               options={[
                 {
                   value: "Tất cả",
@@ -275,7 +237,6 @@ function LoadDataDevice() {
           columns={columns}
           bordered
           style={{ width: "74%" }}
-          dataSource={filteredDeviceData}
           rowClassName={getRowClassName}
           pagination={{ pageSize: 4 }}
         />
@@ -291,4 +252,4 @@ function LoadDataDevice() {
     </div>
   );
 }
-export default LoadDataDevice;
+export default LoadDataService;

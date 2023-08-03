@@ -6,6 +6,10 @@ import Info from "../../page/information";
 import Dashboard from "../../page/dashboard";
 import LoadDataDevice from "../../page/Device/load";
 import DetailsDevice from "../../page/Device/details";
+import AltaAddsDevice from "../../page/Device/add";
+import Update from "../../page/Device/update";
+import LoadDataService from "../../page/Service/load";
+import AccountManagement from "../../page/User/accountManagement";
 
 function AppRoutes() {
   return (
@@ -16,7 +20,11 @@ function AppRoutes() {
       <Route path="/information" element={<Info />}></Route>
       <Route path="/dashboard" element={<Dashboard />}></Route>
       <Route path="/devices" element={<LoadDataDevice />}></Route>
-      <Route path="/details" element={<DetailsDevice />}></Route>
+      <Route path="/details/:id" element={<DetailsDevice />} />
+      <Route path="/add" element={<AltaAddsDevice />}></Route>
+      <Route path="/update" element={<Update />}></Route>
+      <Route path="/services" element={<LoadDataService />}></Route>
+      <Route path="/accountManagement" element={<AccountManagement/>}></Route>
     </Routes>
   );
 }
