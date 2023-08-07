@@ -6,22 +6,25 @@ import iconBigger from "../../image/iconBigger.svg";
 import "../../css/device.css";
 import "../../css/user.css";
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import dotRed from "../../image/dotRed.svg";
 import dotGreen from "../../image/dotGreen.svg";
 import add from "../../image/add.svg";
 import { ThunkDispatch } from "redux-thunk";
-import { RootState } from "../../Redux/store";
+import store, { RootState } from "../../Redux/store";
 import { AnyAction } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import { fetchUser } from "../../Redux/userSlice";
+import { fetchUser, loginSuccess } from "../../Redux/userSlice";
+import Search from "antd/es/input/Search";
 
 function AccountManagement() {
-  const handleChange = (value: { value: string; label: React.ReactNode }) => {
-    console.log(value);
+  const [search, setSearch] = useState("");
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(event.target.value);
   };
+  const navigate = useNavigate();
 
   const getRowClassName = (_record: any, index: number) => {
     return index % 2 !== 0 ? "bg-pink" : "";
@@ -32,11 +35,18 @@ function AccountManagement() {
   useEffect(() => {
     dispatch(fetchUser());
   }, [dispatch]);
-  const filteredUserData = userData.filter((item: { role: string }) => {
+  const filteredUserData = userData.filter((item) => {
     const matchActiveStatus =
-      activeStatusFilter === "Tất cả" ||
-      item.role === activeStatusFilter;
-    return matchActiveStatus;
+      activeStatusFilter === "Tất cả" || item.role === activeStatusFilter;
+    const se =
+      search.trim() === "" ||
+      item.userName?.toLowerCase().includes(search.toLowerCase()) ||
+      item.email?.toLowerCase().includes(search.toLowerCase()) ||
+      item.activeStatus?.toLowerCase().includes(search.toLowerCase()) ||
+      item.fullName?.toLowerCase().includes(search.toLowerCase()) ||
+      item.phone?.toLowerCase().includes(search.toLowerCase()) ||
+      item.role?.toLowerCase().includes(search.toLowerCase());
+    return matchActiveStatus && se;
   });
   const columns = [
     {
@@ -84,10 +94,21 @@ function AccountManagement() {
       title: "",
       dataIndex: "update",
       key: "update",
-      render: () => <Link to={""}>Cập nhật</Link>,
+      render: (_text: any, record: any) => (
+        <Link to={`/accountManagementUpdate/${record.id}`}>Cập nhật</Link>
+      ),
     },
   ];
-
+  const userInfo = useSelector((state: RootState) => state.users.currentUser);
+  useEffect(() => {
+    // Kiểm tra xem có dữ liệu người dùng trong Local Storage không
+    const storedUser = localStorage.getItem("currentUser");
+    if (storedUser) {
+      const parsedUser = JSON.parse(storedUser);
+      // Nếu có, dispatch action loginSuccess để cập nhật dữ liệu người dùng vào Redux Store
+      store.dispatch(loginSuccess(parsedUser));
+    }
+  }, []);
   return (
     <div>
       <SideMenu />
@@ -119,30 +140,32 @@ function AccountManagement() {
           preview={false}
           style={{ marginLeft: "2000%" }}
         ></Image>
-        <div style={{ display: "inline", marginLeft: "55%" }}>
-          <Image src={avatar} preview={false}></Image>
-        </div>
-        <Typography.Text
-          style={{
-            position: "absolute",
-            marginTop: "-6px",
-            marginLeft: "5px",
-          }}
-          className="hi-info"
-        >
-          Xin chào
-        </Typography.Text>
+        <Link to={"/information"}>
+          <div style={{ display: "inline", marginLeft: "55%" }}>
+            <Image src={avatar} preview={false}></Image>
+          </div>
+          <Typography.Text
+            style={{
+              position: "absolute",
+              marginTop: "-6px",
+              marginLeft: "5px",
+            }}
+            className="hi-info"
+          >
+            Xin chào
+          </Typography.Text>
 
-        <Typography.Text
-          style={{
-            position: "absolute",
-            marginTop: "20px",
-            marginLeft: "5px",
-          }}
-          className="name-info"
-        >
-          Lê Quỳnh Ái Vân
-        </Typography.Text>
+          <Typography.Text
+            style={{
+              position: "absolute",
+              marginTop: "20px",
+              marginLeft: "5px",
+            }}
+            className="name-info"
+          >
+            {userInfo?.fullName}
+          </Typography.Text>
+        </Link>
       </div>
       <div className="device-content">
         <Typography.Text className="device-title ">
@@ -189,26 +212,12 @@ function AccountManagement() {
             {" "}
             <Typography.Text className="label-input">Từ khoá</Typography.Text>
             <br />
-            <Select
+            <Search
               className="select"
-              labelInValue
-              defaultValue={{ value: "Tất cả", label: "Tất cả" }}
+              placeholder="input search text"
+              value={search}
+              onChange={handleSearch}
               style={{ width: 300 }}
-              onChange={handleChange}
-              options={[
-                {
-                  value: "Tất cả",
-                  label: "Tất cả",
-                },
-                {
-                  value: "Hoạt động",
-                  label: "Hoạt động",
-                },
-                {
-                  value: "Ngưng hoạt động",
-                  label: "Ngưng hoạt động",
-                },
-              ]}
             />
           </div>
         </Space>
@@ -223,7 +232,10 @@ function AccountManagement() {
           pagination={{ pageSize: 4 }}
           dataSource={filteredUserData}
         />
-        <Button className="btn-orange-user">
+        <Button
+          className="btn-orange-user"
+          onClick={() => navigate(`/accountManagementAdd`)}
+        >
           <Image src={add} preview={false}></Image>
           <br />
           <Typography.Text className="text-orange">

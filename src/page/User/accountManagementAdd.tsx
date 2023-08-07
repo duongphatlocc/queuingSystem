@@ -4,24 +4,46 @@ import iconBigger from "../../image/iconBigger.svg";
 import notification from "../../image/notification.svg";
 import avatar from "../../image/avatar.svg";
 import start from "../../image/start.svg";
+import "../../css/user.css";
 import "../../css/device.css";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { DeviceData, addDevices } from "./../../Redux/deviceSlice";
+import { UserData, addUser, loginSuccess } from "../../Redux/userSlice";
 import store, { RootState } from "../../Redux/store";
-import { loginSuccess } from "../../Redux/userSlice";
 
-function AltaAddsDevice() {
+function AccountManagementAdd() {
   const navigate = useNavigate();
-  const [device, setDevice] = useState("");
-  const [name, setName] = useState("");
-  const [address, setAddress] = useState("");
-  const [serviceUse, setServiceUse] = useState("");
   const [userName, setUserName] = useState("");
+  const [fullName, setFullName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+  const [role, setRole] = useState("");
+  const [activeStatus, setActiveStatus] = useState("");
   const [password, setPassword] = useState("");
-  const [typeOfDevice, setTypeOfDevice] = useState("");
+  const [rePassword, setRePassword] = useState("");
   const dispatch: any = useDispatch();
+  const handleCreateUser = () => {
+    const userData: UserData = {
+      userName,
+      fullName,
+      phone,
+      email,
+      role,
+      activeStatus,
+      password,
+      rePassword,
+    };
+    dispatch(addUser(userData))
+      .then((action: any) => {
+        console.log(userData);
+      })
+      .catch((error: any) => {
+        console.log("Error saving data:", error);
+      });
+    console.log(userData);
+    navigate(`/accountManagement`);
+  };
   const userInfo = useSelector((state: RootState) => state.users.currentUser);
   useEffect(() => {
     // Kiểm tra xem có dữ liệu người dùng trong Local Storage không
@@ -33,29 +55,6 @@ function AltaAddsDevice() {
     }
   }, []);
 
-  const handleCreateDevice = () => {
-    const deviceData: DeviceData = {
-      device,
-      name,
-      address,
-      serviceUse,
-      userName,
-      password,
-      typeOfDevice,
-
-      activeStatus: "Hoạt động",
-      connectionStatus: "Kết nối",
-    };
-    dispatch(addDevices(deviceData))
-      .then((action: any) => {
-        const deviceId = action.payload;
-        console.log(deviceData);
-      })
-      .catch((error: any) => {
-        console.log("Error saving data:", error);
-      });
-    console.log(deviceData);
-  };
   return (
     <div>
       <SideMenu />
@@ -71,7 +70,7 @@ function AltaAddsDevice() {
         }}
       >
         <Typography.Text className="text-title">
-          Thiết bị{" "}
+          Cài đặt hệ thống{" "}
           <Image
             src={iconBigger}
             preview={false}
@@ -80,7 +79,7 @@ function AltaAddsDevice() {
         </Typography.Text>
 
         <Typography.Text className="text-title">
-          Danh sách thiết bị
+          Quản lý tài khoản
         </Typography.Text>
         <Image
           src={iconBigger}
@@ -88,7 +87,7 @@ function AltaAddsDevice() {
           style={{ marginTop: "-8px" }}
         ></Image>
         <Typography.Text className="info-information">
-          Thêm thiết bị
+          Thêm tài khoản
         </Typography.Text>
         <Image
           src={notification}
@@ -96,6 +95,7 @@ function AltaAddsDevice() {
           style={{ marginLeft: "1550%" }}
         ></Image>
         <Link to={"/information"}>
+          {" "}
           <div style={{ display: "inline", marginLeft: "43%" }}>
             <Image src={avatar} preview={false}></Image>
           </div>
@@ -109,7 +109,6 @@ function AltaAddsDevice() {
           >
             Xin chào
           </Typography.Text>
-
           <Typography.Text
             style={{
               position: "absolute",
@@ -122,131 +121,158 @@ function AltaAddsDevice() {
           </Typography.Text>
         </Link>
       </div>
+
       <div className="device-content">
         <Typography.Text className="device-title ">
-          Quản lý thiết bị
+          Quản lý tài khoản
         </Typography.Text>
+
         <div className="mt-4">
           <Card style={{ width: "75%", height: "62vh" }}>
             <Typography.Text className="info-information">
-              Thông tin thiết bị
+              Thông tin tài khoản
             </Typography.Text>
             <br />
             <Space className="mt-4">
               <div>
                 <Typography.Text className="font-word">
-                  Mã thiết bị: <Image src={start} preview={false}></Image>
+                  Họ tên:<Image src={start} preview={false}></Image>
                 </Typography.Text>
                 <br />
                 <Input
                   className="mt-2 input-add"
-                  placeholder="Nhập mã thiết bị"
-                  value={device}
-                  onChange={(e) => setDevice(e.target.value)}
+                  placeholder="Nhập họ tên"
+                  value={fullName}
+                  onChange={(e) => setFullName(e.target.value)}
                 ></Input>
               </div>
               <div style={{ marginLeft: "5%" }}>
                 <Typography.Text className="font-word">
-                  Loại thiết bị: <Image src={start} preview={false}></Image>
+                  Tên đăng nhập: <Image src={start} preview={false}></Image>
                 </Typography.Text>
                 <br />
-                <Select
-                  className="input-add"
-                  placeholder="Chọn loại thiết bị"
-                  style={{ width: 530 }}
-                  value={typeOfDevice}
-                  onChange={(value) => setTypeOfDevice(value)}
-                  options={[
-                    {
-                      value: "Kiosk",
-                      label: "Kiosk",
-                    },
-                    {
-                      value: "Display counter",
-                      label: "Display counter",
-                    },
-                  ]}
-                />
+                <Input
+                  className="mt-2 input-add"
+                  placeholder="Nhập tên đăng nhập"
+                  value={userName}
+                  onChange={(e) => setUserName(e.target.value)}
+                ></Input>
               </div>
               {/*  */}
             </Space>
             <Space className="mt-2">
               <div>
                 <Typography.Text className="font-word">
-                  Tên thiết bị: <Image src={start} preview={false}></Image>
+                  Số điện thoại <Image src={start} preview={false}></Image>
                 </Typography.Text>
                 <br />
                 <Input
                   className="mt-2 input-add"
-                  placeholder="Nhập tên thiết bị"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  placeholder="Nhập số điện thoại"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
                 ></Input>
               </div>
               <div style={{ marginLeft: "5%" }}>
                 <Typography.Text className="font-word">
-                  Tên đăng nhập:: <Image src={start} preview={false}></Image>
+                  Mật khẩu: <Image src={start} preview={false}></Image>
                 </Typography.Text>
                 <br />
-                <Input
-                  value={userName}
-                  onChange={(e) => setUserName(e.target.value)}
+                <Input.Password
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   className="mt-2 input-add"
-                  placeholder="Nhập tài khoản"
-                ></Input>
+                ></Input.Password>
               </div>
             </Space>
             <Space className="mt-2">
               <div>
                 <Typography.Text className="font-word">
-                  Địa chỉ IP: <Image src={start} preview={false}></Image>
+                  Email <Image src={start} preview={false}></Image>
                 </Typography.Text>
                 <br />
                 <Input
-                  value={address}
-                  onChange={(e) => setAddress(e.target.value)}
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   className="mt-2 input-add"
-                  placeholder="Nhập địa chỉ IP"
+                  placeholder="Nhập email"
                 ></Input>
               </div>
               <div style={{ marginLeft: "5%" }}>
                 <Typography.Text className="font-word">
-                  Mật khẩu:<Image src={start} preview={false}></Image>
+                  Nhập lại mật khẩu<Image src={start} preview={false}></Image>
                 </Typography.Text>
                 <br />
-                <Input
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                <Input.Password
+                  value={rePassword}
+                  onChange={(e) => setRePassword(e.target.value)}
                   className="mt-2 input-add"
-                  placeholder="Nhập mật khẩu"
-                ></Input>
+                ></Input.Password>
               </div>
             </Space>
-            <div className="mt-2">
-              <Typography.Text className="font-word">
-                Dịch vụ sử dụng: <Image src={start} preview={false}></Image>
-              </Typography.Text>
-              <br />
-              <Input
-                value={serviceUse}
-                onChange={(e) => setServiceUse(e.target.value)}
-                className="mt-2 input-add-1"
-                placeholder="Nhập dịch vụ sử dụng"
-              ></Input>
-              <br />
-              <div className="mt-3"></div>
-              <Typography.Text>
-                <Image src={start} preview={false} className=""></Image> Là
-                trường thông tin bắt buộc
-              </Typography.Text>
-            </div>
+            <Space className="mt-4">
+              <div>
+                <Typography.Text className="font-word">
+                  Vai trò <Image src={start} preview={false}></Image>
+                </Typography.Text>
+                <br />
+                <Select
+                  className="input-add"
+                  placeholder="Chọn vai trò"
+                  style={{ width: 530 }}
+                  value={role}
+                  onChange={(value) => setRole(value)}
+                  options={[
+                    {
+                      value: "Kế toán",
+                      label: "Kế toán",
+                    },
+                    {
+                      value: "Quản lý",
+                      label: "Quản lý",
+                    },
+                    {
+                      value: "Admin",
+                      label: "Admin",
+                    },
+                  ]}
+                />
+              </div>
+              <div style={{ marginLeft: "5%" }}>
+                <Typography.Text className="font-word">
+                  Tình trạng <Image src={start} preview={false}></Image>
+                </Typography.Text>
+                <br />
+                <Select
+                  className="input-add"
+                  placeholder="Chọn loại thiết bị"
+                  style={{ width: 530 }}
+                  value={activeStatus}
+                  onChange={(value) => setActiveStatus(value)}
+                  options={[
+                    {
+                      value: "Ngưng hoạt động",
+                      label: "Ngưng hoạt động",
+                    },
+                    {
+                      value: "Hoạt động",
+                      label: "Hoạt động",
+                    },
+                  ]}
+                />
+              </div>
+              {/*  */}
+            </Space>
           </Card>
           <Space className="two-button">
-            <Button className="btn-cancel" onClick={() => navigate(`/devices`)}>
+            <Button
+              className="btn-cancel"
+              onClick={() => navigate(`/accountManagement`)}
+            >
               Hủy bỏ
             </Button>
-            <Button className="btn-right-add" onClick={handleCreateDevice}>
-              Thêm thiết bị
+            <Button className="btn-right-add" onClick={handleCreateUser}>
+              Thêm
             </Button>
           </Space>
         </div>
@@ -254,4 +280,4 @@ function AltaAddsDevice() {
     </div>
   );
 }
-export default AltaAddsDevice;
+export default AccountManagementAdd;

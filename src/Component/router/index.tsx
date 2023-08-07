@@ -10,6 +10,9 @@ import AltaAddsDevice from "../../page/Device/add";
 import Update from "../../page/Device/update";
 import LoadDataService from "../../page/Service/load";
 import AccountManagement from "../../page/User/accountManagement";
+import AccountManagementAdd from "../../page/User/accountManagementAdd";
+import AccountManagementUpdate from "../../page/User/accountManagementUpdate";
+import LoadLeveL from "../../page/Levels/loadLevel";
 
 function AppRoutes() {
   return (
@@ -24,7 +27,16 @@ function AppRoutes() {
       <Route path="/add" element={<AltaAddsDevice />}></Route>
       <Route path="/update" element={<Update />}></Route>
       <Route path="/services" element={<LoadDataService />}></Route>
-      <Route path="/accountManagement" element={<AccountManagement/>}></Route>
+      <Route path="/accountManagement" element={<AccountManagement />}></Route>
+      <Route
+        path="/accountManagementAdd"
+        element={<AccountManagementAdd />}
+      ></Route>
+      <Route
+        path="/accountManagementUpdate/:id"
+        element={<AccountManagementUpdate />}
+      />
+      <Route path="/levels" element={<LoadLeveL />}></Route>
     </Routes>
   );
 }

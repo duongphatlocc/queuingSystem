@@ -5,10 +5,24 @@ import notification from "../../image/notification.svg";
 import avatar from "../../image/avatar.svg";
 import start from "../../image/start.svg";
 import "../../css/device.css";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import store, { RootState } from "../../Redux/store";
+import { useEffect } from "react";
+import { loginSuccess } from "../../Redux/userSlice";
 
 function Update() {
   const navigate = useNavigate();
+  const userInfo = useSelector((state: RootState) => state.users.currentUser);
+  useEffect(() => {
+    // Kiểm tra xem có dữ liệu người dùng trong Local Storage không
+    const storedUser = localStorage.getItem("currentUser");
+    if (storedUser) {
+      const parsedUser = JSON.parse(storedUser);
+      // Nếu có, dispatch action loginSuccess để cập nhật dữ liệu người dùng vào Redux Store
+      store.dispatch(loginSuccess(parsedUser));
+    }
+  }, []);
 
   return (
     <div>
@@ -49,30 +63,32 @@ function Update() {
           preview={false}
           style={{ marginLeft: "1550%" }}
         ></Image>
-        <div style={{ display: "inline", marginLeft: "43%" }}>
-          <Image src={avatar} preview={false}></Image>
-        </div>
-        <Typography.Text
-          style={{
-            position: "absolute",
-            marginTop: "-6px",
-            marginLeft: "5px",
-          }}
-          className="hi-info"
-        >
-          Xin chào
-        </Typography.Text>
+        <Link to={".information"}>
+          <div style={{ display: "inline", marginLeft: "43%" }}>
+            <Image src={avatar} preview={false}></Image>
+          </div>
+          <Typography.Text
+            style={{
+              position: "absolute",
+              marginTop: "-6px",
+              marginLeft: "5px",
+            }}
+            className="hi-info"
+          >
+            Xin chào
+          </Typography.Text>
 
-        <Typography.Text
-          style={{
-            position: "absolute",
-            marginTop: "20px",
-            marginLeft: "5px",
-          }}
-          className="name-info"
-        >
-          Lê Quỳnh Ái Vân
-        </Typography.Text>
+          <Typography.Text
+            style={{
+              position: "absolute",
+              marginTop: "20px",
+              marginLeft: "5px",
+            }}
+            className="name-info"
+          >
+            {userInfo?.fullName}
+          </Typography.Text>
+        </Link>
       </div>
       <div className="device-content">
         <Typography.Text className="device-title ">

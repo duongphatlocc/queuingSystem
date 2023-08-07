@@ -1,4 +1,12 @@
-import { Typography, Image, Select, Space, Table, Button } from "antd";
+import {
+  Typography,
+  Image,
+  Select,
+  Space,
+  Table,
+  Button,
+  DatePicker,
+} from "antd";
 import SideMenu from "../../Component/menu";
 import notification from "../../image/notification.svg";
 import avatar from "../../image/avatar.svg";
@@ -10,31 +18,45 @@ import { Link, useNavigate } from "react-router-dom";
 import dotRed from "../../image/dotRed.svg";
 import dotGreen from "../../image/dotGreen.svg";
 import add from "../../image/add.svg";
+import { useSelector } from "react-redux";
+import store, { RootState } from "../../Redux/store";
+import { useEffect } from "react";
+import { loginSuccess } from "../../Redux/userSlice";
+import downArrow from "../../image/downArrow.svg";
+import Search from "antd/es/input/Search";
 
 function LoadDataService() {
-  const handleChange = (value: { value: string; label: React.ReactNode }) => {
-    console.log(value);
-  };
+  const userInfo = useSelector((state: RootState) => state.users.currentUser);
+  useEffect(() => {
+    // Kiểm tra xem có dữ liệu người dùng trong Local Storage không
+    const storedUser = localStorage.getItem("currentUser");
+    if (storedUser) {
+      const parsedUser = JSON.parse(storedUser);
+      // Nếu có, dispatch action loginSuccess để cập nhật dữ liệu người dùng vào Redux Store
+      store.dispatch(loginSuccess(parsedUser));
+    }
+  }, []);
   const navigate = useNavigate();
   const getRowClassName = (_record: any, index: number) => {
     return index % 2 !== 0 ? "bg-pink" : "";
   };
 
+  
   const columns = [
     {
-      title: "Mã thiết bị",
-      dataIndex: "device",
-      key: "device",
+      title: "Mã dịch vụ",
+      dataIndex: "service",
+      key: "service",
     },
     {
-      title: "Tên thiết bị",
-      dataIndex: "name",
-      key: "name",
+      title: "Tên dịch vụ ",
+      dataIndex: "nameService",
+      key: "nameService",
     },
     {
-      title: "Địa chỉ IP",
-      dataIndex: "address",
-      key: "address",
+      title: "Mô tả",
+      dataIndex: "describe",
+      key: "describe",
     },
     {
       title: "Trạng thái hoạt động",
@@ -51,26 +73,7 @@ function LoadDataService() {
         </Space>
       ),
     },
-    {
-      title: "Trạng thái kết nối",
-      dataIndex: "connectionStatus",
-      key: "connectionStatus",
-      render: (connectionStatus: string) => (
-        <Space>
-          {connectionStatus === "Kết nối" ? (
-            <Image src={dotGreen} />
-          ) : (
-            <Image src={dotRed} />
-          )}
-          <span>{connectionStatus}</span>
-        </Space>
-      ),
-    },
-    {
-      title: "Dịch vụ sử dụng",
-      dataIndex: "serviceUse",
-      key: "serviceUse",
-    },
+
     {
       title: "",
       dataIndex: "detail",
@@ -86,6 +89,7 @@ function LoadDataService() {
       render: () => <Link to={`/update`}>Cập nhật</Link>,
     },
   ];
+  const dateFormat = "DD/MM/YYYY";
 
   return (
     <div>
@@ -118,30 +122,32 @@ function LoadDataService() {
           preview={false}
           style={{ marginLeft: "2200%" }}
         ></Image>
-        <div style={{ display: "inline", marginLeft: "60%" }}>
-          <Image src={avatar} preview={false}></Image>
-        </div>
-        <Typography.Text
-          style={{
-            position: "absolute",
-            marginTop: "-6px",
-            marginLeft: "5px",
-          }}
-          className="hi-info"
-        >
-          Xin chào
-        </Typography.Text>
-
-        <Typography.Text
-          style={{
-            position: "absolute",
-            marginTop: "20px",
-            marginLeft: "5px",
-          }}
-          className="name-info"
-        >
-          Lê Quỳnh Ái Vân
-        </Typography.Text>
+        <Link to={"/information"}>
+          {" "}
+          <div style={{ display: "inline", marginLeft: "60%" }}>
+            <Image src={avatar} preview={false}></Image>
+          </div>
+          <Typography.Text
+            style={{
+              position: "absolute",
+              marginTop: "-6px",
+              marginLeft: "5px",
+            }}
+            className="hi-info"
+          >
+            Xin chào
+          </Typography.Text>
+          <Typography.Text
+            style={{
+              position: "absolute",
+              marginTop: "20px",
+              marginLeft: "5px",
+            }}
+            className="name-info"
+          >
+            {userInfo?.fullName}
+          </Typography.Text>
+        </Link>
       </div>
       <div className="device-content">
         <Typography.Text className="device-title ">
@@ -176,57 +182,38 @@ function LoadDataService() {
               ]}
             />
           </div>
-          <div className="ms-4">
+          <div className="ms-5">
             {" "}
             <Typography.Text className="label-input">
-              Trạng thái kết nối
+              Chọn thời gian
             </Typography.Text>
             <br />
-            <Select
+            <DatePicker
+              format={dateFormat}
               className="select"
-              labelInValue
-              defaultValue={{ value: "Tất cả", label: "Tất cả" }}
-              style={{ width: 300 }}
-              options={[
-                {
-                  value: "Tất cả",
-                  label: "Tất cả",
-                },
-                {
-                  value: "Kết nối",
-                  label: "Kết nối",
-                },
-                {
-                  value: "Mất kết nối",
-                  label: "Mất kết nối",
-                },
-              ]}
-            />
+              style={{ width: 150, height: "40px" }}
+            ></DatePicker>
           </div>
-          <div style={{ marginLeft: "200px" }}>
+          <div style={{ marginLeft: "", marginTop: "15px" }}>
+            <Image src={downArrow}></Image>
+          </div>
+          <div>
+            {" "}
+            <br />
+            <DatePicker
+              format={dateFormat}
+              className="select"
+              style={{ width: 150, height: "40px" }}
+            ></DatePicker>
+          </div>
+          <div style={{ marginLeft: "70%" }}>
             {" "}
             <Typography.Text className="label-input">Từ khoá</Typography.Text>
             <br />
-            <Select
+            <Search
               className="select"
-              labelInValue
-              defaultValue={{ value: "Tất cả", label: "Tất cả" }}
-              style={{ width: 300 }}
-              onChange={handleChange}
-              options={[
-                {
-                  value: "Tất cả",
-                  label: "Tất cả",
-                },
-                {
-                  value: "Hoạt động",
-                  label: "Hoạt động",
-                },
-                {
-                  value: "Ngưng hoạt động",
-                  label: "Ngưng hoạt động",
-                },
-              ]}
+              placeholder="input search text"
+              style={{ width: 250 }}
             />
           </div>
         </Space>

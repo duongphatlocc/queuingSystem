@@ -6,12 +6,16 @@ import authReducer from "./authSlice";
 import cloudDataReducer from "./cloudataSlice";
 import deviceSlice from "./deviceSlice";
 import userSlice from "./userSlice";
+import levelSlice from "./levelSlice";
+import serviceSlice from "./servicelice";
 
 const rootReducer = combineReducers({
   auth: authReducer,
   cloudData: cloudDataReducer,
   device: deviceSlice,
-  users:userSlice
+  users: userSlice,
+  levels: levelSlice,
+  services: serviceSlice,
 });
 
 const middleware = [...getDefaultMiddleware(), thunkMiddleware];

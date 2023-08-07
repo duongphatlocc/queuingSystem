@@ -5,13 +5,14 @@ import notification from "../../image/notification.svg";
 import avatar from "../../image/avatar.svg";
 import "../../css/device.css";
 import iconPen from "../../image/iconPen.svg";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { DeviceData, fetchDevice } from "../../Redux/deviceSlice";
 import { AnyAction } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
 import { ThunkDispatch } from "redux-thunk";
-import { RootState } from "../../Redux/store";
+import store, { RootState } from "../../Redux/store";
+import { loginSuccess } from "../../Redux/userSlice";
 
 function DetailsDevice() {
   const { id } = useParams<{ id: string }>();
@@ -24,6 +25,16 @@ function DetailsDevice() {
     setDataSelect(selectedData || null); // Nếu không tìm thấy, setEmailData thành null
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch]);
+  const userInfo = useSelector((state: RootState) => state.users.currentUser);
+  useEffect(() => {
+    // Kiểm tra xem có dữ liệu người dùng trong Local Storage không
+    const storedUser = localStorage.getItem("currentUser");
+    if (storedUser) {
+      const parsedUser = JSON.parse(storedUser);
+      // Nếu có, dispatch action loginSuccess để cập nhật dữ liệu người dùng vào Redux Store
+      store.dispatch(loginSuccess(parsedUser));
+    }
+  }, []);
 
   return (
     <div>
@@ -64,30 +75,32 @@ function DetailsDevice() {
           preview={false}
           style={{ marginLeft: "1550%" }}
         ></Image>
-        <div style={{ display: "inline", marginLeft: "43%" }}>
-          <Image src={avatar} preview={false}></Image>
-        </div>
-        <Typography.Text
-          style={{
-            position: "absolute",
-            marginTop: "-6px",
-            marginLeft: "5px",
-          }}
-          className="hi-info"
-        >
-          Xin chào
-        </Typography.Text>
-
-        <Typography.Text
-          style={{
-            position: "absolute",
-            marginTop: "20px",
-            marginLeft: "5px",
-          }}
-          className="name-info"
-        >
-          Lê Quỳnh Ái Vân
-        </Typography.Text>
+        <Link to={"/information"}>
+          {" "}
+          <div style={{ display: "inline", marginLeft: "43%" }}>
+            <Image src={avatar} preview={false}></Image>
+          </div>
+          <Typography.Text
+            style={{
+              position: "absolute",
+              marginTop: "-6px",
+              marginLeft: "5px",
+            }}
+            className="hi-info"
+          >
+            Xin chào
+          </Typography.Text>
+          <Typography.Text
+            style={{
+              position: "absolute",
+              marginTop: "20px",
+              marginLeft: "5px",
+            }}
+            className="name-info"
+          >
+            {userInfo?.fullName}
+          </Typography.Text>
+        </Link>
       </div>
       <div className="device-content">
         <Typography.Text className="device-title ">

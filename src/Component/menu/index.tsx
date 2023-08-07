@@ -1,5 +1,5 @@
 import { Button, Image, Menu, Typography } from "antd";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "../../image/logo.svg";
 import iconDashboard from "../../image/iconDashboard.svg";
 import iconDevice from "../../image/iconDevice.svg";
@@ -12,6 +12,7 @@ import iconDots from "../../image/iconDots.svg";
 const { SubMenu } = Menu;
 
 function SideMenu() {
+  const navigate = useNavigate();
   return (
     <div className="side-menu-container">
       <div className="menu-bg-left">
@@ -83,7 +84,7 @@ function SideMenu() {
           </SubMenu>
         </Menu>
         <div>
-          <Button className="logout">
+          <Button className="logout" onClick={() => navigate(`/`)}>
             <div className="button-logout-ml">
               <Image src={iconLogout} preview={false} />{" "}
               <Typography.Text className="text-logout">

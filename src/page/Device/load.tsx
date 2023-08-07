@@ -14,10 +14,21 @@ import dotRed from "../../image/dotRed.svg";
 import dotGreen from "../../image/dotGreen.svg";
 import add from "../../image/add.svg";
 import { ThunkDispatch } from "redux-thunk";
-import { RootState } from "../../Redux/store";
+import store, { RootState } from "../../Redux/store";
 import { AnyAction } from "@reduxjs/toolkit";
+import { loginSuccess } from "../../Redux/userSlice";
 
 function LoadDataDevice() {
+  const userInfo = useSelector((state: RootState) => state.users.currentUser);
+  useEffect(() => {
+    // Kiểm tra xem có dữ liệu người dùng trong Local Storage không
+    const storedUser = localStorage.getItem("currentUser");
+    if (storedUser) {
+      const parsedUser = JSON.parse(storedUser);
+      // Nếu có, dispatch action loginSuccess để cập nhật dữ liệu người dùng vào Redux Store
+      store.dispatch(loginSuccess(parsedUser));
+    }
+  }, []);
   const handleChange = (value: { value: string; label: React.ReactNode }) => {
     console.log(value);
   };
@@ -150,30 +161,32 @@ function LoadDataDevice() {
           preview={false}
           style={{ marginLeft: "2200%" }}
         ></Image>
-        <div style={{ display: "inline", marginLeft: "60%" }}>
-          <Image src={avatar} preview={false}></Image>
-        </div>
-        <Typography.Text
-          style={{
-            position: "absolute",
-            marginTop: "-6px",
-            marginLeft: "5px",
-          }}
-          className="hi-info"
-        >
-          Xin chào
-        </Typography.Text>
+        <Link to={"/information"}>
+          <div style={{ display: "inline", marginLeft: "60%" }}>
+            <Image src={avatar} preview={false}></Image>
+          </div>
+          <Typography.Text
+            style={{
+              position: "absolute",
+              marginTop: "-6px",
+              marginLeft: "5px",
+            }}
+            className="hi-info"
+          >
+            Xin chào
+          </Typography.Text>
 
-        <Typography.Text
-          style={{
-            position: "absolute",
-            marginTop: "20px",
-            marginLeft: "5px",
-          }}
-          className="name-info"
-        >
-          Lê Quỳnh Ái Vân
-        </Typography.Text>
+          <Typography.Text
+            style={{
+              position: "absolute",
+              marginTop: "20px",
+              marginLeft: "5px",
+            }}
+            className="name-info"
+          >
+            {userInfo?.fullName}
+          </Typography.Text>
+        </Link>
       </div>
       <div className="device-content">
         <Typography.Text className="device-title ">
