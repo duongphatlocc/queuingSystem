@@ -1,2 +1,126 @@
-:where(.css-dev-only-do-not-override-txh9fw).ant-picker .ant-picker-input {
+.text-level {
+  color: var(--orange-orange-500, #ff7506);
+
+  /* 32/32 Bold */
+  font-family: Nunito;
+  font-size: 35px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 48px; /* 150% */
+  margin-left: 45%;
+}
+.content-level {
+  color: var(--gray-gray-400-text, #535261);
+
+  /* 20/20 Bold */
+  font-family: Nunito;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 30px; /* 150% */
+  margin-left: 43%;
+}
+.two-button-level {
+  position: relative;
+  z-index: 1;
+  margin-left: 40%;
+  margin-top: 7%;
+}
+.button-cancel-level {
+  border-radius: 8px;
+  border: 1.5px solid var(--orange-orange-400, #ff9138);
+  background: var(--orange-orange-50, #fff2e7);
+
+  /* down */
+  box-shadow: 0px 0px 6px 0px #e7e9f2;
+  height: 50px;
+  width: 130px;
+  color: var(--orange-orange-400, #ff9138);
+  font-family: Nunito;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+.button-add-level {
+  border-radius: 8px;
+  background: var(--orange-orange-400, #ff9138);
+
+  /* down */
+  box-shadow: 0px 0px 6px 0px #e7e9f2;
+
+  height: 50px;
+  width: 130px;
+  color: var(--white, #fff);
+  font-family: Nunito;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+.stt-level {
+  color: var(--gray-gray-400-text, #535261);
+
+  /* 32/32 Bold */
+  font-family: Nunito;
+  font-size: 25px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 48px; /* 150% */
+  margin-left: 28%;
+}
+.stt {
+  color: var(--orange-orange-500, #ff7506);
+  font-family: Nunito;
+  font-size: 40px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: 60px; /* 107.143% */
+  margin-left: 33%;
+}
+.text {
+  color: var(--gray-gray-500, #282739);
+
+  /* 18/18 Reg */
+  font-family: Nunito;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 27px; /* 150% */
+  margin-left: 20%;
+}
+.text-black {
+  color: var(--gray-gray-500, #282739);
+
+  /* 18/18 Bold */
+  font-family: Nunito;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 27px;
+  display: inline;
+}
+.bg-o {
+  position: absolute;
+  background: var(--orange-orange-400, #ff9138);
+  width: 520px;
+  height: 100px;
+  margin-left: -23.9px;
+  border-bottom-left-radius: 24px;
+  border-bottom-right-radius: 24px;
+  top: 205px;
+}
+:where(.css-dev-only-do-not-override-txh9fw).ant-modal .ant-modal-content {
+  border-radius: 24px;
+  height: 300px;
+}
+.white {
+  color: var(--white, #fff);
+
+  /* 22/22 Bold */
+  font-family: Nunito;
+  font-size: 22px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 33px; /* 150% */
 }

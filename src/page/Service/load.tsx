@@ -18,12 +18,14 @@ import { Link, useNavigate } from "react-router-dom";
 import dotRed from "../../image/dotRed.svg";
 import dotGreen from "../../image/dotGreen.svg";
 import add from "../../image/add.svg";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import store, { RootState } from "../../Redux/store";
 import { useEffect } from "react";
 import { loginSuccess } from "../../Redux/userSlice";
 import downArrow from "../../image/downArrow.svg";
 import Search from "antd/es/input/Search";
+import { AnyAction, ThunkDispatch } from "@reduxjs/toolkit";
+import { fetchService } from "../../Redux/servicelice";
 
 function LoadDataService() {
   const userInfo = useSelector((state: RootState) => state.users.currentUser);
@@ -41,22 +43,28 @@ function LoadDataService() {
     return index % 2 !== 0 ? "bg-pink" : "";
   };
 
-  
+  const dispatch: ThunkDispatch<RootState, unknown, AnyAction> = useDispatch();
+  const serviceData = useSelector(
+    (state: RootState) => state.services.services
+  );
+  useEffect(() => {
+    dispatch(fetchService());
+  }, [dispatch]);
   const columns = [
     {
       title: "Mã dịch vụ",
-      dataIndex: "service",
-      key: "service",
+      dataIndex: "code",
+      key: "code",
     },
     {
       title: "Tên dịch vụ ",
-      dataIndex: "nameService",
-      key: "nameService",
+      dataIndex: "name",
+      key: "name",
     },
     {
       title: "Mô tả",
-      dataIndex: "describe",
-      key: "describe",
+      dataIndex: "description",
+      key: "description",
     },
     {
       title: "Trạng thái hoạt động",
@@ -79,14 +87,16 @@ function LoadDataService() {
       dataIndex: "detail",
       key: "detail",
       render: (_text: any, record: any) => (
-        <Link to={`/details/${record.id}`}>Chi tiết</Link>
+        <Link to={`/detailsService/${record.id}`}>Chi tiết</Link>
       ),
     },
     {
       title: "",
       dataIndex: "update",
       key: "update",
-      render: () => <Link to={`/update`}>Cập nhật</Link>,
+      render: (_text: any, record: any) => (
+        <Link to={`/updateService/${record.id}`}>Cập nhật</Link>
+      ),
     },
   ];
   const dateFormat = "DD/MM/YYYY";
@@ -226,13 +236,17 @@ function LoadDataService() {
           style={{ width: "74%" }}
           rowClassName={getRowClassName}
           pagination={{ pageSize: 4 }}
+          dataSource={serviceData}
         />
-        <Button className="btn-orange-device" onClick={() => navigate(`/add`)}>
+        <Button
+          className="btn-orange-device"
+          onClick={() => navigate(`/addServices`)}
+        >
           <Image src={add} preview={false}></Image>
           <br />
           <Typography.Text className="text-orange">
             Thêm <br />
-            thiết bị
+            dịch vụ
           </Typography.Text>
         </Button>
       </div>

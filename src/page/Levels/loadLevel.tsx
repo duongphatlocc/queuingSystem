@@ -1,6 +1,6 @@
-import { Typography, Image, Space, Select, Table } from "antd";
+import { Typography, Image, Space, Select, Table, Button } from "antd";
 import SideMenu from "../../Component/menu";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import iconBigger from "../../image/iconBigger.svg";
 import notification from "../../image/notification.svg";
 import avatar from "../..//image/avatar.svg";
@@ -11,6 +11,7 @@ import { loginSuccess } from "../../Redux/userSlice";
 import Search from "antd/es/input/Search";
 import { DatePicker } from "antd";
 import "../../css/level.css";
+
 import dotGray from "../../image/dotGray.svg";
 import dotBlue from "../../image/dotBlue.svg";
 import dotRed from "../../image/dotRed.svg";
@@ -18,7 +19,13 @@ import downArrow from "../../image/downArrow.svg";
 import { ThunkDispatch } from "redux-thunk";
 import { AnyAction } from "@reduxjs/toolkit";
 import { fetchLevel } from "../../Redux/levelSlice";
+import add from "../../image/add.svg";
+import dayjs from "dayjs";
 function LoadLeveL() {
+  const getRowClassName = (_record: any, index: number) => {
+    return index % 2 !== 0 ? "bg-pink" : "";
+  };
+  const navigate = useNavigate();
   const userInfo = useSelector((state: RootState) => state.users.currentUser);
   useEffect(() => {
     // Kiểm tra xem có dữ liệu người dùng trong Local Storage không
@@ -35,6 +42,7 @@ function LoadLeveL() {
     dispatch(fetchLevel());
   }, [dispatch]);
   const dateFormat = "DD/MM/YYYY";
+
   const columns = [
     {
       title: "STT",
@@ -86,10 +94,35 @@ function LoadLeveL() {
 
     {
       title: "",
-      dataIndex: "update",
-      key: "update",
+      dataIndex: "detail",
+      key: "detail",
+      render: (_text: any, record: any) => (
+        <Link to={`/detailsLevel/${record.id}`}>Chi tiết</Link>
+      ),
     },
   ];
+  const servicesData = useSelector(
+    (state: RootState) => state.services.services
+  );
+  const serviceOptions = [
+    { value: "Tất cả", label: "Tất cả" },
+    ...servicesData.map((service) => ({
+      value: service.name,
+      label: service.name,
+    })),
+  ];
+  const [dateStart, setDateStart] = useState(null);
+  const [dateEnd, setDateEnd] = useState(null);
+
+  const handleStartDateChange = (date: any, dateString: any) => {
+    setDateStart(date);
+  };
+
+  const handleEndDateChange = (date: any, dateString: any) => {
+    setDateEnd(date);
+  };
+
+  //
   const [activeStatusFilter, setActiveStatusFilter] = useState("Tất cả");
   const [serviceStatusFilter, setServiceStatusFilter] = useState("Tất cả");
   const [powerSupplyFilter, setPowerSupplyFilter] = useState("Tất cả");
@@ -103,7 +136,23 @@ function LoadLeveL() {
     const matchPowerSupply =
       powerSupplyFilter === "Tất cả" || item.powerSupply === powerSupplyFilter;
 
-    return matchActiveStatus && matchService && matchPowerSupply;
+    const matchStartDate =
+      !dateStart ||
+      (item.dateStart && dayjs(item.dateStart).isSame(dateStart)) ||
+      dayjs(item.dateStart).isAfter(dateStart);
+
+    const matchEndDate =
+      !dateEnd ||
+      (item.dateEnd && dayjs(item.dateEnd).isSame(dateEnd)) ||
+      dayjs(item.dateEnd).isBefore(dateEnd);
+
+    return (
+      matchActiveStatus &&
+      matchService &&
+      matchPowerSupply &&
+      matchStartDate &&
+      matchEndDate
+    );
   });
   return (
     <div>
@@ -184,24 +233,7 @@ function LoadLeveL() {
               onChange={(value) => {
                 setServiceStatusFilter(value.value);
               }}
-              options={[
-                {
-                  value: "Tất cả",
-                  label: "Tất cả",
-                },
-                {
-                  value: "Khám sản - Phụ khoa",
-                  label: "Khám sản - Phụ khoa",
-                },
-                {
-                  value: "Khám răng hàm mặt",
-                  label: "Khám răng hàm mặt",
-                },
-                {
-                  value: "Khám tai mũi họng",
-                  label: "Khám tai mũi họng",
-                },
-              ]}
+              options={serviceOptions}
             />
           </div>
           <div>
@@ -276,6 +308,8 @@ function LoadLeveL() {
               format={dateFormat}
               className="select"
               style={{ width: 150, height: "40px" }}
+              value={dateStart}
+              onChange={handleStartDateChange}
             ></DatePicker>
           </div>
           <div style={{ marginLeft: "", marginTop: "15px" }}>
@@ -287,8 +321,10 @@ function LoadLeveL() {
             <DatePicker
               format={dateFormat}
               className="select"
-              style={{ width: 150, height: "40px" }}
-            ></DatePicker>
+              style={{ width: 250, height: "40px" }}
+              value={dateEnd}
+              onChange={handleEndDateChange}
+            />
           </div>
           <div style={{ marginLeft: "10%" }}>
             {" "}
@@ -309,7 +345,19 @@ function LoadLeveL() {
           style={{ width: "74%" }}
           pagination={{ pageSize: 4 }}
           dataSource={filteredUserData}
+          rowClassName={getRowClassName}
         />
+        <Button
+          className="btn-orange-device"
+          onClick={() => navigate(`/addLevel`)}
+        >
+          <Image src={add} preview={false}></Image>
+          <br />
+          <Typography.Text className="text-orange">
+            Cấp <br />
+            số mới
+          </Typography.Text>
+        </Button>
       </div>
     </div>
   );

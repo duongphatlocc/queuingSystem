@@ -4,27 +4,20 @@ import iconBigger from "../../image/iconBigger.svg";
 import notification from "../../image/notification.svg";
 import avatar from "../../image/avatar.svg";
 import "../../css/device.css";
-import iconPen from "../../image/iconPen.svg";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { DeviceData, fetchDevice } from "../../Redux/deviceSlice";
-import { AnyAction } from "@reduxjs/toolkit";
-import { useDispatch, useSelector } from "react-redux";
-import { ThunkDispatch } from "redux-thunk";
 import store, { RootState } from "../../Redux/store";
 import { loginSuccess } from "../../Redux/userSlice";
+import { useDispatch, useSelector } from "react-redux";
+import iconBack from "../../image/iconBack.svg";
+import { LevelData, fetchLevel } from "../../Redux/levelSlice";
+import { ThunkDispatch } from "redux-thunk";
+import { AnyAction } from "@reduxjs/toolkit";
+import dotBlue from "../../image/dotBlue.svg";
+import dotRed from "../../image/dotRed.svg";
+import dotGray from "../../image/dotGray.svg";
 
-function DetailsDevice() {
-  const { id } = useParams<{ id: string }>();
-  const [dataSelect, setDataSelect] = useState<DeviceData | null>(null);
-  const dispatch: ThunkDispatch<RootState, unknown, AnyAction> = useDispatch();
-  const deviceData = useSelector((state: RootState) => state.devices.devices);
-  useEffect(() => {
-    dispatch(fetchDevice());
-    const selectedData = deviceData.find((item) => item.id === id);
-    setDataSelect(selectedData || null); // Nếu không tìm thấy, setEmailData thành null
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch]);
+function DetailsLevel() {
   const userInfo = useSelector((state: RootState) => state.users.currentUser);
   useEffect(() => {
     // Kiểm tra xem có dữ liệu người dùng trong Local Storage không
@@ -35,7 +28,16 @@ function DetailsDevice() {
       store.dispatch(loginSuccess(parsedUser));
     }
   }, []);
-
+  const { id } = useParams<{ id: string }>();
+  const [dataSelect, setDataSelect] = useState<LevelData | null>(null);
+  const dispatch: ThunkDispatch<RootState, unknown, AnyAction> = useDispatch();
+  const levelData = useSelector((state: RootState) => state.levels.levels);
+  useEffect(() => {
+    dispatch(fetchLevel());
+    const selectedData = levelData.find((item) => item.id === id);
+    setDataSelect(selectedData || null);
+  }, [dispatch]);
+  const navigate = useNavigate();
   return (
     <div>
       <SideMenu />
@@ -60,16 +62,14 @@ function DetailsDevice() {
         </Typography.Text>
 
         <Typography.Text className="text-title">
-          Danh sách thiết bị
+          Danh sách cấp số
         </Typography.Text>
         <Image
           src={iconBigger}
           preview={false}
           style={{ marginTop: "-8px" }}
         ></Image>
-        <Typography.Text className="info-information">
-          Chi tiết thiết bị
-        </Typography.Text>
+        <Typography.Text className="info-information">Chi tiết</Typography.Text>
         <Image
           src={notification}
           preview={false}
@@ -104,86 +104,114 @@ function DetailsDevice() {
       </div>
       <div className="device-content">
         <Typography.Text className="device-title ">
-          Quản lý thiết bị
+          Quản lý cấp số
         </Typography.Text>
         <div className="mt-4"></div>
         <Space>
           <Card style={{ width: "80%", height: "70vh" }}>
             <Typography.Text className="info-information">
-              Thông tin thiết bị
+              Thông tin cấp số
             </Typography.Text>
             <br />
             <Space className="mt-3">
-              <Typography.Text className="font-word">
-                Mã thiết bị:
-              </Typography.Text>
-              <Typography.Text className="ms-4">
-                {dataSelect?.device}
-              </Typography.Text>
-              <div style={{ marginLeft: "400px" }}>
-                {" "}
-                <Typography.Text className="font-word">
-                  Loại thiết bị:
-                </Typography.Text>
-                <Typography.Text className="ms-4">
-                  {dataSelect?.typeOfDevice}
-                </Typography.Text>
-              </div>
-            </Space>
-            <Space className="mt-3">
-              <Typography.Text className="font-word">
-                Tên thiết bị:
-              </Typography.Text>
+              <Typography.Text className="font-word">Họ tên:</Typography.Text>
               <Typography.Text className="ms-4">
                 {dataSelect?.name}
               </Typography.Text>
-              <div style={{ marginLeft: "405px" }}>
+              <div style={{ marginLeft: "370px" }}>
                 {" "}
                 <Typography.Text className="font-word">
-                  Tên đăng nhập:
+                  Nguồn cấp:
                 </Typography.Text>
                 <Typography.Text className="ms-4">
-                  {dataSelect?.userName}
+                  {dataSelect?.powerSupply}
                 </Typography.Text>
               </div>
             </Space>
             <Space className="mt-3">
               <Typography.Text className="font-word">
-                Địa chỉ IP:
+                Tên dịch vụ:
               </Typography.Text>
               <Typography.Text className="ms-4">
-                {dataSelect?.address}
+                {dataSelect?.nameService}
               </Typography.Text>
-              <div style={{ marginLeft: "378px" }}>
+              <div style={{ marginLeft: "380px" }}>
                 {" "}
                 <Typography.Text className="font-word">
-                  Mật khẩu:{" "}
+                  Trạng thái:
                 </Typography.Text>
                 <Typography.Text className="ms-4">
-                  {dataSelect?.password}
+                  <div
+                    className="status-icon"
+                    style={{ display: "inline", marginRight: "10px" }}
+                  >
+                    {dataSelect?.activeStatus === "Đang chờ" && (
+                      <img src={dotBlue} alt="Dot Blue" />
+                    )}
+                    {dataSelect?.activeStatus === "Bỏ qua" && (
+                      <img src={dotRed} alt="Dot Red" />
+                    )}
+                    {dataSelect?.activeStatus === "Đã sử dụng" && (
+                      <img src={dotGray} alt="Dot Gray" />
+                    )}
+                  </div>
+                  {dataSelect?.activeStatus}
+                </Typography.Text>
+              </div>
+            </Space>
+            <Space className="mt-3">
+              <Typography.Text className="font-word">
+                Số thứ tự:
+              </Typography.Text>
+              <Typography.Text className="ms-4">
+                {dataSelect?.stt}
+              </Typography.Text>
+              <div style={{ marginLeft: "385px" }}>
+                {" "}
+                <Typography.Text className="font-word">
+                  Số điện thoại:{" "}
+                </Typography.Text>
+                <Typography.Text className="ms-4">
+                  {dataSelect?.phone}
+                </Typography.Text>
+              </div>
+            </Space>
+            <Space className="mt-3">
+              <Typography.Text className="font-word">
+                Thời gian cấp:
+              </Typography.Text>
+              <Typography.Text className="ms-4">
+                {dataSelect?.dateStart}
+              </Typography.Text>
+              <div style={{ marginLeft: "290px" }}>
+                {" "}
+                <Typography.Text className="font-word">
+                  Địa chỉ Email:{" "}
+                </Typography.Text>
+                <Typography.Text className="ms-4">
+                  {dataSelect?.email}
                 </Typography.Text>
               </div>
             </Space>
             <br />
             <div className="mt-3">
               <Typography.Text className="font-word">
-                Dịch vụ sử dụng:
+                Hạn sử dụng:
               </Typography.Text>
-              <br />
-              <div className="mt-2"></div>
-              <Typography.Text>{dataSelect?.serviceUse}</Typography.Text>
+
+              <Typography.Text className="ms-4">
+                {dataSelect?.dateEnd}
+              </Typography.Text>
             </div>
           </Card>
-          <Button className="btn-orange">
-            <Image src={iconPen} preview={false}></Image>
+          <Button className="btn-orange" onClick={() => navigate(`/levels`)}>
+            <Image src={iconBack} preview={false}></Image>
             <br />
-            <Typography.Text className="text-orange">
-              Cập nhật <br /> thiết bị
-            </Typography.Text>
+            <Typography.Text className="text-orange">Quay lại</Typography.Text>
           </Button>
         </Space>
       </div>
     </div>
   );
 }
-export default DetailsDevice;
+export default DetailsLevel;

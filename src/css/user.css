@@ -11,3 +11,10 @@
   /* down */
   box-shadow: 0px 0px 6px 0px #e7e9f2;
 }
+.bg-right-orange {
+  border-radius: 8px;
+  background: var(--orange-orange-50, #fff2e7);
+  height: 360px;
+  width: 550px;
+  margin-left: 20px;
+}

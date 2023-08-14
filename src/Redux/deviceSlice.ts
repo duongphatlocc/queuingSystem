@@ -95,18 +95,18 @@ export interface DeviceData {
 }
 
 interface DeviceState {
-  device: DeviceData[];
+  devices: DeviceData[];
   loading: boolean;
   error: string | null;
 }
 
 const initialState: DeviceState = {
-  device: [],
+  devices: [],
   loading: false,
   error: null,
 };
 
-export const fetchDevice = createAsyncThunk("device/fetchDevice", async () => {
+export const fetchDevice = createAsyncThunk("devices/fetchDevice", async () => {
   try {
     // Make the API request to fetch the device data
     const response = await db.collection("devices").get();
@@ -127,20 +127,31 @@ export const fetchDevice = createAsyncThunk("device/fetchDevice", async () => {
   }
 });
 export const addDevices = createAsyncThunk(
-  "device/addDevice",
+  "devices/addDevice",
   async (device: DeviceData) => {
     try {
       // Loại bỏ trường không cần thiết "typeOfDevice.disabled"
 
       const docRef = await db.collection("devices").add(device);
-       device.id = docRef.id;
+      device.id = docRef.id;
       return device;
     } catch (error) {}
   }
 );
+export const updateDevice = createAsyncThunk(
+  "debices/updateDevice",
+  async (device: DeviceData) => {
+    try {
+      await db.collection("devices").doc(device.id).update(device);
+      return device;
+    } catch (err) {
+      throw err;
+    }
+  }
+);
 
 const deviceSlice = createSlice({
-  name: "device",
+  name: "devices",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
@@ -149,7 +160,7 @@ const deviceSlice = createSlice({
         fetchDevice.fulfilled,
         (state, action: PayloadAction<DeviceData[]>) => {
           state.loading = false;
-          state.device = action.payload; // Update the device state with the fetched data
+          state.devices = action.payload; // Update the device state with the fetched data
         }
       )
       .addCase(fetchDevice.pending, (state) => {
@@ -169,6 +180,24 @@ const deviceSlice = createSlice({
         state.device.push(action.payload);
       })
       .addCase(addDevices.rejected, (state: any, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(updateDevice.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateDevice.fulfilled, (state, action) => {
+        state.loading = false;
+        const updateDevice = action.payload;
+        const index = state.devices.findIndex(
+          (device) => device.id === updateDevice.id
+        );
+        if (index !== -1) {
+          state.devices[index] = updateDevice;
+        }
+      })
+      .addCase(updateDevice.rejected, (state: any, action) => {
         state.loading = false;
         state.error = action.payload;
       });

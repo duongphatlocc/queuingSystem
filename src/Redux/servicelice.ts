@@ -1,12 +1,16 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { db } from "./firebase";
 
+
 export interface ServiceData {
-  id?: string;
-  service: string;
-  nameService: string;
-  describe: string;
-  activeStatus: string;
+id?: string; // Id không bắt buộc, do nó sẽ được Firebase tự động tạo
+  code: string;
+  description: string;
+  name: string;
+  autoIncrease?: boolean;
+  fromNumber: number;
+  toNumber: number;
+  activeStatus:string;
 }
 interface ServiceState {
   services: ServiceData[];

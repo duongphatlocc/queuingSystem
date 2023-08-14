@@ -43,7 +43,7 @@ function LoadDataDevice() {
   //   dispatch(fetchDevice());
   // });
   const dispatch: ThunkDispatch<RootState, unknown, AnyAction> = useDispatch();
-  const deviceData = useSelector((state: RootState) => state.device.device);
+  const deviceData = useSelector((state: RootState) => state.devices.devices);
   useEffect(() => {
     dispatch(fetchDevice());
   }, [dispatch]);
@@ -126,7 +126,9 @@ function LoadDataDevice() {
       title: "",
       dataIndex: "update",
       key: "update",
-      render: () => <Link to={`/update`}>Cập nhật</Link>,
+      render: (_text: any, record: any) => (
+        <Link to={`/update/${record.id}`}>Cập nhật</Link>
+      ),
     },
   ];
 

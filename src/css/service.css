@@ -1,0 +1,26 @@
+.btn-orange-service {
+  position: relative;
+  z-index: 1;
+  top: -240px;
+  left: 20%;
+  width: 100px;
+  height: 120px;
+  border-radius: 8px 0px 0px 8px;
+  background: var(--orange-orange-50, #fff2e7);
+
+  /* down */
+  box-shadow: 0px 0px 6px 0px #e7e9f2;
+}
+.btn-orange-service1 {
+  position: absolute;
+  z-index: 1;
+  top: 152px;
+  left: 77.7%;
+  width: 100px;
+  height: 120px;
+  border-radius: 8px 0px 0px 8px;
+  background: var(--orange-orange-50, #fff2e7);
+
+  /* down */
+  box-shadow: 0px 0px 6px 0px #e7e9f2;
+}

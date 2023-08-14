@@ -49,3 +49,11 @@
   line-height: 36px; /* 150% */
   margin-left: 30px;
 }
+.card-right {
+  border-radius: 12px;
+  background: var(--white, #fff);
+  box-shadow: 2px 2px 15px 0px rgba(70, 64, 67, 0.1);
+  width: 400px;
+  margin-left: 25px;
+  height: 100px;
+}

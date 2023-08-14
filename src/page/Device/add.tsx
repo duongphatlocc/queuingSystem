@@ -17,12 +17,13 @@ function AltaAddsDevice() {
   const [device, setDevice] = useState("");
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
-  const [serviceUse, setServiceUse] = useState("");
+  const [serviceUse, setServiceUse] = useState<string[]>([]);
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [typeOfDevice, setTypeOfDevice] = useState("");
   const dispatch: any = useDispatch();
   const userInfo = useSelector((state: RootState) => state.users.currentUser);
+
   useEffect(() => {
     // Kiểm tra xem có dữ liệu người dùng trong Local Storage không
     const storedUser = localStorage.getItem("currentUser");
@@ -32,13 +33,23 @@ function AltaAddsDevice() {
       store.dispatch(loginSuccess(parsedUser));
     }
   }, []);
-
+  const servicesData = useSelector(
+    (state: RootState) => state.services.services
+  );
+  const serviceOptions = [
+    { value: "Tất cả", label: "Tất cả" },
+    ...servicesData.map((service) => ({
+      value: service.name,
+      label: service.name,
+    })),
+  ];
   const handleCreateDevice = () => {
+    const serviceUsedString = serviceUse.join(", ");
     const deviceData: DeviceData = {
       device,
       name,
       address,
-      serviceUse,
+      serviceUse: serviceUsedString,
       userName,
       password,
       typeOfDevice,
@@ -46,6 +57,7 @@ function AltaAddsDevice() {
       activeStatus: "Hoạt động",
       connectionStatus: "Kết nối",
     };
+
     dispatch(addDevices(deviceData))
       .then((action: any) => {
         const deviceId = action.payload;
@@ -54,6 +66,7 @@ function AltaAddsDevice() {
       .catch((error: any) => {
         console.log("Error saving data:", error);
       });
+    navigate(`/devices`);
     console.log(deviceData);
   };
   return (
@@ -227,12 +240,20 @@ function AltaAddsDevice() {
                 Dịch vụ sử dụng: <Image src={start} preview={false}></Image>
               </Typography.Text>
               <br />
-              <Input
-                value={serviceUse}
-                onChange={(e) => setServiceUse(e.target.value)}
+              <Select
+                mode="multiple"
+                labelInValue
                 className="mt-2 input-add-1"
                 placeholder="Nhập dịch vụ sử dụng"
-              ></Input>
+                options={serviceOptions}
+                onChange={(selectedValues) => {
+                  const selectedServiceNames = selectedValues.map(
+                    (value: any) => value.label
+                  );
+                  setServiceUse(selectedServiceNames);
+                }}
+              />
+
               <br />
               <div className="mt-3"></div>
               <Typography.Text>

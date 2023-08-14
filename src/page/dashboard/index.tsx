@@ -7,8 +7,23 @@ import stt from "../../image/stt.svg";
 import stt2 from "../../image/stt2.svg";
 import stt3 from "../../image/stt3.svg";
 import stt4 from "../../image/stt4.svg";
+import { RingProgress } from "@ant-design/charts"; // Import the Bar component
 
 function Dashboard() {
+  const config = {
+    height: 65,
+    width: 65,
+    autoFit: false,
+    percent: 0.07,
+    color: ["#5B8FF9", "#E8EDF3"],
+  };
+  const config2 = {
+    height: 65,
+    width: 65,
+    autoFit: false,
+
+    color: ["#5B8FF9", "#E8EDF3"],
+  };
   return (
     <div>
       <SideMenu />
@@ -131,6 +146,20 @@ function Dashboard() {
         <Typography.Text className="text-right-dashboard">
           Tổng quan
         </Typography.Text>
+        <div style={{ position: "relative" }}>
+          <Card className="card-right ">
+            <RingProgress {...config} />
+            <RingProgress percent={0} {...config2} />
+          </Card>
+        </div>
+
+        <Card className="card-right mt-2">
+          <RingProgress {...config} />
+        </Card>
+
+        <Card className="card-right mt-2">
+          <RingProgress {...config} />
+        </Card>
       </div>
     </div>
   );
