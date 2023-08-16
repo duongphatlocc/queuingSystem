@@ -57,3 +57,30 @@
   margin-left: 25px;
   height: 100px;
 }
+.chart-card {
+  width: 800px; /* Điều chỉnh giá trị chiều rộng tùy theo mong muốn */
+
+  /* Pink shadow */
+  box-shadow: 2px 2px 15px 0px rgba(70, 64, 67, 0.1);
+  margin-top: 10px;
+}
+.chart-card-text {
+  color: var(--gray-gray-500, #282739);
+
+  /* 20/20 Bold */
+  font-family: Nunito;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 30px; /* 150% */
+}
+.chart-card-xt {
+  color: var(--gray-gray-500, #282739);
+
+  /* 16/16 Semi */
+  font-family: Nunito;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 24px; /* 150% */
+}

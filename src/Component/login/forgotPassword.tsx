@@ -1,13 +1,39 @@
-import { Button, Image, Input, Typography } from "antd";
+import { useState } from "react";
+import { Button, Input, Typography, message } from "antd";
 import logo from "../../image/logo.svg";
-import "../../css/forgotPassword.css";
 import forgotPassword from "../../image/forgotPassword.svg";
+import "../../css/forgotPassword.css";
+import { db } from "../../Redux/firebase";
+import { useNavigate } from "react-router-dom";
 
 function ForgotPassword() {
+  const [email, setEmail] = useState("");
+  const history = useNavigate(); // Initialize useHistory
+
+  const handleResetPassword = async () => {
+    try {
+      const userSnapshot = await db
+        .collection("users")
+        .where("email", "==", email)
+        .get();
+
+      if (userSnapshot.empty) {
+        message.error("Email not found");
+        return;
+      }
+
+      // Redirect to reset password page
+      history(`/resetPassword?email=${email}`);
+    } catch (error) {
+      console.error("Error checking email:", error);
+      message.error("An error occurred");
+    }
+  };
+
   return (
     <div>
       <div className=" bg-left-login">
-        <Image src={logo} preview={false} className="image-logo"></Image>
+        <img src={logo} alt="Logo" className="image-logo" />
         <div className="form-input-login">
           <br />
           <br />
@@ -21,23 +47,34 @@ function ForgotPassword() {
           </Typography.Text>
 
           <br />
-          <Input className="input-login"></Input>
+          <Input
+            className="input-login"
+            placeholder="Enter your email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
           <br />
 
           <br />
 
-          <Button className=" button-forgot-password-cancel" >Hủy</Button>
-          <Button className="mt-4 button-forgot-password-next">Tiếp tục</Button>
+          <Button className="button-forgot-password-cancel">Hủy</Button>
+          <Button
+            className="mt-4 button-forgot-password-next"
+            onClick={handleResetPassword}
+          >
+            Tiếp tục
+          </Button>
         </div>
       </div>
-      <div className=" bg-right-login">
-        <Image
+      <div className="bg-right-login">
+        <img
           src={forgotPassword}
-          preview={false}
+          alt="Forgot Password"
           className="forgot-password-people"
-        ></Image>
+        />
       </div>
     </div>
   );
 }
+
 export default ForgotPassword;
